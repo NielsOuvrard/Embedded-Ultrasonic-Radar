@@ -1,0 +1,142 @@
+# Ignore build output directories
+*/Debug/
+*/Drivers/
+*/Release/
+*/build/
+*/out/
+
+# Ignore STM32CubeIDE specific files
+*.launch
+*.settings
+*.cproject
+*.project
+*.ide.log
+*.swp
+*.bak
+*.tmp
+*.user
+
+# Ignore object files, binaries, and libraries
+*.o
+*.a
+*.so
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.d
+
+# Ignore auto-generated files
+*.i
+*.s
+*.d
+*.dep
+*.su
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.svd
+
+# Ignore firmware upload tools' temporary files
+*.stlink
+*.stc
+
+# Ignore IDE-specific files (e.g., VSCode)
+.vscode/
+*.code-workspace
+
+# Ignore backup files
+*~
+*.orig
+
+# Ignore generated documentation
+/doc/
+/html/
+/latex/
+
+# Ignore Python virtual environments (if used for scripting)
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore custom configuration files
+config.mk
+Makefile.local
+
+# Mac
+.DS_Store
+
+# STM32CubeIDE specific files
+.metadata/
+*.launch
+*.settings
+*.cproject
+*.project
+*.ide.log
+
+# Build output directories
+/Debug/
+/Release/
+/build/
+/out/
+
+# Backup and temporary files
+*.bak
+*.tmp
+*.swp
+*.swo
+*.orig
+*~
+
+# MacOS specific files
+.DS_Store
+
+# Logs
+*.log
+
+# Generated files
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.d
+*.dep
+*.su
+*.i
+*.s
+
+# Cyclomatic complexity files
+*.cyclo
+
+# Python virtual environments (if used)
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated documentation
+/doc/
+/html/
+/latex/
+
+*.o
+*.zip
+*.ld
+stm32*
+sys*
+.mxproject
+core_cm3.h
+
+gpio.*
+tim.*
+
+*/USB_DEVICE/*
+
+*.scratch
