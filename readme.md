@@ -75,7 +75,7 @@ The MG-90S servo is controlled using PWM with pulse widths between 500μs (0°) 
 To run the visualization, you need to install Python and Pygame. The data is sent over USB in the following format:
 
 ```html
-<angle>,<distance>\r\n
+<distance>,<angle>\r\n
 ```
 
 Run the Python script to visualize the radar data:
