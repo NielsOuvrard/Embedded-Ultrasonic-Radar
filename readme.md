@@ -1,6 +1,5 @@
 # Ultrasonic Radar System
 
-![Radar System](https://via.placeholder.com/800x400)
 
 ## Overview
 
@@ -14,7 +13,17 @@ This project implements an ultrasonic radar system using a STM32F103C8T6 microco
 - **Jumper wires**
 - **Breadboard**
 
-![Hardware Components](https://via.placeholder.com/600x400)
+## Images
+
+Top view of the setup:
+![Top View](./screenshots/top_view.jpeg)
+
+It's too light, need to put the setup between two books for stability.
+![light_weight](./screenshots/light_weight.jpeg)
+
+Usage example:
+![Usage Example](./screenshots/usage_example.jpeg)
+
 
 ## Pin Connections
 
@@ -30,7 +39,6 @@ This project implements an ultrasonic radar system using a STM32F103C8T6 microco
 
 ## Physical Setup
 
-![Physical Setup](https://via.placeholder.com/700x500)
 
 1. Mount the MG-90S servo on a stable platform
 2. Attach the HC-SR04 sensor to the servo arm (we used a 3D-printed holder)
@@ -64,7 +72,6 @@ The HC-SR04 sensor operates by sending an ultrasonic pulse and measuring the tim
 Distance (cm) = (Echo Pulse Duration (μs) * Speed of Sound (343 m/s)) / 2 / 10000
 ```
 
-![HC-SR04 Timing Diagram](https://via.placeholder.com/600x300)
 
 ### Servo Control
 
@@ -87,7 +94,7 @@ The radar visualization will show the distance measurements at different angles,
 
 ### Example Output
 
-![Radar Visualization](https://via.placeholder.com/800x400)
+![Radar Visualization](./screenshots/visualisation_example.png)
 
 ## Credits
 
