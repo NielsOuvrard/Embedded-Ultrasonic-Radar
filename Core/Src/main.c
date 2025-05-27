@@ -68,7 +68,9 @@ static void MX_TIM1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 bool clockwise = true; // Variable to control the direction of the motor
-uint16_t pwm_value = 0; // Variable to store the PWM value
+volatile uint16_t pwm_value = 0; // Variable to store the PWM value
+
+volatile bool distance_recieved = false;
 
 /* USER CODE END 0 */
 
@@ -118,37 +120,49 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  #define MIN_PWD 500
+  #define MAX_PWD 2500
+  #define NUMBER_CHECKS 100
+  #define PWD_TO_INCREMENT ((MAX_PWD - MIN_PWD) / NUMBER_CHECKS) // 80
+
+  uint32_t last_tick = 0;
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    __HAL_TIM_SET_COMPARE(&htim2,TIM_CHANNEL_2, pwm_value);
-    HAL_Delay(1);
 
-    if (pwm_value % 100 == 0) 
-    {
+
+    if (distance_recieved) {
       char buffer[50];
       int len = snprintf(buffer, sizeof(buffer), "%d,%d\n\r", Distance, pwm_value);
       CDC_Transmit_FS((uint8_t *)buffer, len);
+      distance_recieved = false;
     }
+    
+    // Run this block every 50ms
+    if (HAL_GetTick() - last_tick >= 50) {
+      last_tick = HAL_GetTick();
+      
+      if (clockwise) {
+        pwm_value += PWD_TO_INCREMENT; // Increase the PWM value for clockwise rotation
+        if (pwm_value >= MAX_PWD) {
+          clockwise = false; // Change direction to counter-clockwise
+        }
+      } else {
+        pwm_value -= PWD_TO_INCREMENT; // Decrease the PWM value for counter-clockwise rotation
+        if (pwm_value <= MIN_PWD) {
+          clockwise = true; // Change direction to clockwise
+        }
+      }
+      __HAL_TIM_SET_COMPARE(&htim2,TIM_CHANNEL_2, pwm_value);
 
-    if (clockwise) {
-      pwm_value++; // Increase the PWM value for clockwise rotation
-      if (pwm_value >= 2500) {
-        clockwise = false; // Change direction to counter-clockwise
-      }
-    }  else {
-      pwm_value--; // Decrease the PWM value for counter-clockwise rotation
-      if (pwm_value <= 500) {
-        clockwise = true; // Change direction to clockwise
-      }
+      HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_SET);  // pull the TRIG pin HIGH
+      __HAL_TIM_SET_COUNTER(&htim1, 0);
+      while (__HAL_TIM_GET_COUNTER (&htim1) < 10);  // wait for 10 us
+      HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_RESET);  // pull the TRIG pin low
+
     }
-
-    HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_SET);  // pull the TRIG pin HIGH
-    __HAL_TIM_SET_COUNTER(&htim1, 0);
-    while (__HAL_TIM_GET_COUNTER (&htim1) < 10);  // wait for 10 us
-    HAL_GPIO_WritePin(TRIG_PORT, TRIG_PIN, GPIO_PIN_RESET);  // pull the TRIG pin low
   }
   /* USER CODE END 3 */
 }
@@ -360,6 +374,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         {
             uint32_t endTime = __HAL_TIM_GET_COUNTER(&htim1); // Record the end time
             Distance = (endTime - startTime) * 0.034 / 2; // Calculate distance in cm
+            distance_recieved = true;
         }
     }
 }
